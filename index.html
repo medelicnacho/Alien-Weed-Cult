@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
 <title>Alien Weed Cult</title>
 
 <style>
@@ -10,7 +12,7 @@ body{
 background:black;
 color:#39ff14;
 font-family:'Share Tech Mono', monospace;
-max-width:1200px;
+max-width:1100px;
 margin:auto;
 padding:20px;
 text-shadow:0 0 4px #39ff14;
@@ -37,7 +39,7 @@ pointer-events:none;
 z-index:1000;
 }
 
-/* Boot screen */
+/* boot screen */
 
 #boot{
 position:fixed;
@@ -56,18 +58,6 @@ z-index:2000;
 white-space:pre-line;
 }
 
-#site{
-display:none;
-}
-
-.sigil{
-text-align:center;
-font-size:28px;
-margin-top:10px;
-margin-bottom:10px;
-letter-spacing:6px;
-}
-
 h1{
 text-align:center;
 font-size:42px;
@@ -77,25 +67,15 @@ margin-bottom:10px;
 
 .subtitle{
 text-align:center;
-margin-bottom:12px;
-font-size:14px;
-}
-
-.counter{
-text-align:center;
-margin-bottom:25px;
-font-size:13px;
-opacity:0.9;
+margin-bottom:20px;
 }
 
 .audio-wrap{
-width:100%;
-margin-bottom:40px;
+margin-bottom:30px;
 }
 
 .player{
-width:100%;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 audio{
@@ -109,6 +89,8 @@ margin:20px 0;
 font-size:18px;
 }
 
+/* doctrine box */
+
 #text{
 white-space:pre-wrap;
 text-align:left;
@@ -116,13 +98,6 @@ border:2px solid #39ff14;
 padding:20px;
 background:rgba(0,20,0,0.35);
 box-shadow:0 0 12px rgba(57,255,20,0.25);
-position:relative;
-}
-
-.label{
-text-align:center;
-font-size:13px;
-margin-bottom:6px;
 }
 
 /* blinking cursor */
@@ -132,8 +107,8 @@ display:inline-block;
 width:10px;
 height:20px;
 background:#39ff14;
-margin-top:10px;
 animation:blink 1s infinite;
+margin-top:10px;
 }
 
 @keyframes blink{
@@ -142,7 +117,7 @@ animation:blink 1s infinite;
 100%{opacity:1;}
 }
 
-/* ORACLE (same position as before) */
+/* oracle */
 
 .oracle{
 position:fixed;
@@ -156,9 +131,9 @@ filter:drop-shadow(0 0 20px purple);
 }
 
 @keyframes floatOracle{
-0% { transform: translateY(0px); }
-50% { transform: translateY(-25px); }
-100% { transform: translateY(0px); }
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(0);}
 }
 
 </style>
@@ -172,34 +147,34 @@ DECRYPTING TRANSMISSION...
 ACCESS GRANTED
 </div>
 
-<div id="site">
-
-<div class="sigil">☽ ✶ ☾</div>
+<div id="site" style="display:none">
 
 <h1>THE ALIEN WEED CULT</h1>
-<div class="subtitle">TRANSMISSION PORTAL // ACCESS THE DOCTRINE</div>
-<div class="counter">VISITORS: 000421</div>
+
+<div class="subtitle">
+TRANSMISSION PORTAL
+</div>
 
 <div class="audio-wrap">
 
 <div class="player">
-<div class="label">☽ CULT THEME ☾</div>
+<div style="text-align:center; margin-bottom:6px;">☽ CULT THEME ☾</div>
 <audio controls>
-<source src="./cult_theme.mp3" type="audio/mpeg">
+<source src="cult_theme.mp3" type="audio/mpeg">
 </audio>
 </div>
 
 <div class="player">
-<div class="label">☽ DOCTRINE NARRATION PART 1 ☾</div>
+<div style="text-align:center; margin-bottom:6px;">☽ DOCTRINE NARRATION PART 1 ☾</div>
 <audio controls preload="metadata">
-<source src="./alienweedcult_part1.mp3" type="audio/mpeg">
+<source src="alienweedcult_part1.mp3" type="audio/mpeg">
 </audio>
 </div>
 
 <div class="player">
-<div class="label">☽ DOCTRINE NARRATION PART 2 ☾</div>
+<div style="text-align:center; margin-bottom:6px;">☽ DOCTRINE NARRATION PART 2 ☾</div>
 <audio controls preload="metadata">
-<source src="./alienweedcult_part2.mp3" type="audio/mpeg">
+<source src="alienweedcult_part2.mp3" type="audio/mpeg">
 </audio>
 </div>
 
@@ -208,32 +183,33 @@ ACCESS GRANTED
 <div class="divider">☽ TRANSMISSION TEXTS ☾</div>
 
 <div id="text">Loading transmissions...</div>
+
 <div class="cursor"></div>
 
-<img src="./oracle.png" class="oracle">
+<img src="oracle.png" class="oracle">
 
 </div>
 
 <script>
 
-/* Faster boot */
+/* faster boot */
 
-setTimeout(() => {
-document.getElementById("boot").style.display = "none";
-document.getElementById("site").style.display = "block";
-}, 800);
+setTimeout(()=>{
+document.getElementById("boot").style.display="none";
+document.getElementById("site").style.display="block";
+},600);
 
-/* Load doctrine */
+/* load doctrine */
 
-fetch("./doctrine.txt")
+fetch("doctrine.txt")
 .then(response => {
 if (!response.ok){
 throw new Error("Could not load doctrine.txt");
 }
 return response.text();
 })
-.then(data => {
-document.getElementById("text").textContent = data;
+.then(text => {
+document.getElementById("text").textContent = text;
 })
 .catch(error => {
 document.getElementById("text").textContent = "Failed to load transmissions.";
