@@ -17,6 +17,7 @@ margin:auto;
 padding:20px;
 text-shadow:0 0 4px #39ff14;
 overflow-x:hidden;
+animation:flicker 6s infinite;
 }
 
 /* CRT scanlines */
@@ -39,6 +40,16 @@ pointer-events:none;
 z-index:1000;
 }
 
+/* screen flicker */
+
+@keyframes flicker{
+0%{opacity:1;}
+97%{opacity:1;}
+98%{opacity:.95;}
+99%{opacity:1;}
+100%{opacity:.97;}
+}
+
 /* boot */
 
 #boot{
@@ -58,17 +69,20 @@ z-index:2000;
 white-space:pre-line;
 }
 
-/* sigil */
+/* HUGE sigil */
 
 .sigil{
 text-align:center;
-font-size:42px;
-letter-spacing:12px;
-margin-bottom:10px;
-text-shadow:0 0 20px #39ff14;
+font-size:120px;
+letter-spacing:35px;
+margin-bottom:20px;
+text-shadow:
+0 0 20px #39ff14,
+0 0 40px #39ff14,
+0 0 70px #39ff14;
 }
 
-/* main title */
+/* title */
 
 h1{
 text-align:center;
@@ -90,7 +104,7 @@ letter-spacing:3px;
 margin-bottom:25px;
 }
 
-/* BIG transmission title */
+/* section title */
 
 .section-title{
 text-align:center;
@@ -113,11 +127,11 @@ box-shadow:0 0 12px rgba(57,255,20,0.3);
 margin-bottom:25px;
 }
 
-.cult-top{
+.button-row{
 display:flex;
-align-items:center;
-gap:14px;
-margin-bottom:14px;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:10px;
 }
 
 .cult-button{
@@ -135,14 +149,17 @@ background:#39ff14;
 color:black;
 }
 
+/* progress bar */
+
 .progress-container{
 width:100%;
-height:20px;
+height:22px;
 border:1px solid #39ff14;
 background:rgba(0,0,0,0.8);
 cursor:pointer;
 box-shadow:inset 0 0 6px rgba(57,255,20,0.25);
 overflow:hidden;
+margin-top:8px;
 }
 
 .progress-bar{
@@ -158,13 +175,28 @@ text-align:right;
 font-size:14px;
 }
 
-/* doctrine box */
+/* volume slider */
+
+.volume-control{
+margin-top:10px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.volume-slider{
+width:160px;
+}
+
+/* doctrine */
 
 #text{
 white-space:pre-wrap;
 text-align:left;
 border:2px solid #39ff14;
-padding:20px;
+padding:35px;
+font-size:17px;
+line-height:1.6;
 background:rgba(0,20,0,0.35);
 box-shadow:0 0 12px rgba(57,255,20,0.25);
 }
@@ -179,13 +211,16 @@ height:57vh;
 z-index:999;
 pointer-events:none;
 animation:floatOracle 14s ease-in-out infinite;
-filter:drop-shadow(0 0 20px purple);
+filter:
+drop-shadow(0 0 1px purple)
+drop-shadow(0 0 1px #ff00ff)
+drop-shadow(0 0 1px #7a00ff);
 }
 
 @keyframes floatOracle{
-0%{transform:translateY(0)}
-50%{transform:translateY(-25px)}
-100%{transform:translateY(0)}
+0%{transform:translateY(0);}
+50%{transform:translateY(-25px);}
+100%{transform:translateY(0);}
 }
 
 </style>
@@ -209,10 +244,24 @@ ACCESS GRANTED
 TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 </div>
 
-<!-- PLAYERS -->
+
+<!-- PLAYER 1 -->
 
 <div class="cult-player">
-<button class="cult-button" onclick="toggleAudio('theme')">▶ PLAY CULT THEME</button>
+
+<div class="button-row">
+<button class="cult-button" onclick="playAudio('theme')">
+▶ PLAY CULT THEME
+</button>
+
+<button class="cult-button" onclick="pauseAudio('theme')">
+⏸ PAUSE
+</button>
+
+<button class="cult-button" id="theme-mute-btn" onclick="toggleMute('theme')">
+🔇 MUTE
+</button>
+</div>
 
 <div class="progress-container" onclick="seekAudio(event,'theme')">
 <div class="progress-bar" id="theme-progress"></div>
@@ -223,14 +272,36 @@ TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 <span id="theme-duration">0:00</span>
 </div>
 
+<div class="volume-control">
+Volume
+<input class="volume-slider" type="range" min="0" max="1" step="0.01" value="1"
+oninput="setVolume('theme',this.value)">
+</div>
+
 <audio id="theme-audio">
 <source src="cult_theme.mp3">
 </audio>
+
 </div>
 
 
+<!-- PLAYER 2 -->
+
 <div class="cult-player">
-<button class="cult-button" onclick="toggleAudio('part1')">▶ PLAY DOCTRINE PART 1</button>
+
+<div class="button-row">
+<button class="cult-button" onclick="playAudio('part1')">
+▶ PLAY DOCTRINE PART 1
+</button>
+
+<button class="cult-button" onclick="pauseAudio('part1')">
+⏸ PAUSE
+</button>
+
+<button class="cult-button" id="part1-mute-btn" onclick="toggleMute('part1')">
+🔇 MUTE
+</button>
+</div>
 
 <div class="progress-container" onclick="seekAudio(event,'part1')">
 <div class="progress-bar" id="part1-progress"></div>
@@ -241,14 +312,36 @@ TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 <span id="part1-duration">0:00</span>
 </div>
 
+<div class="volume-control">
+Volume
+<input class="volume-slider" type="range" min="0" max="1" step="0.01" value="1"
+oninput="setVolume('part1',this.value)">
+</div>
+
 <audio id="part1-audio">
 <source src="alienweedcult_part1.mp3">
 </audio>
+
 </div>
 
 
+<!-- PLAYER 3 -->
+
 <div class="cult-player">
-<button class="cult-button" onclick="toggleAudio('part2')">▶ PLAY DOCTRINE PART 2</button>
+
+<div class="button-row">
+<button class="cult-button" onclick="playAudio('part2')">
+▶ PLAY DOCTRINE PART 2
+</button>
+
+<button class="cult-button" onclick="pauseAudio('part2')">
+⏸ PAUSE
+</button>
+
+<button class="cult-button" id="part2-mute-btn" onclick="toggleMute('part2')">
+🔇 MUTE
+</button>
+</div>
 
 <div class="progress-container" onclick="seekAudio(event,'part2')">
 <div class="progress-bar" id="part2-progress"></div>
@@ -259,10 +352,18 @@ TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 <span id="part2-duration">0:00</span>
 </div>
 
+<div class="volume-control">
+Volume
+<input class="volume-slider" type="range" min="0" max="1" step="0.01" value="1"
+oninput="setVolume('part2',this.value)">
+</div>
+
 <audio id="part2-audio">
 <source src="alienweedcult_part2.mp3">
 </audio>
+
 </div>
+
 
 <div class="section-title">
 ☽ TRANSMISSION TEXTS ☾
@@ -274,48 +375,77 @@ TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 
 </div>
 
+
 <script>
 
 setTimeout(()=>{
-document.getElementById("boot").style.display="none"
-document.getElementById("site").style.display="block"
-},600)
+document.getElementById("boot").style.display="none";
+document.getElementById("site").style.display="block";
+},600);
 
 fetch("doctrine.txt")
 .then(r=>r.text())
-.then(t=>document.getElementById("text").textContent=t)
+.then(t=>document.getElementById("text").textContent=t);
 
 function formatTime(s){
-const m=Math.floor(s/60)
-const sec=Math.floor(s%60).toString().padStart(2,"0")
-return m+":"+sec
+const m=Math.floor(s/60);
+const sec=Math.floor(s%60).toString().padStart(2,"0");
+return m+":"+sec;
 }
 
-function toggleAudio(name){
-const audio=document.getElementById(name+"-audio")
-if(audio.paused){audio.play()}else{audio.pause()}
+function playAudio(name){
+const audio=document.getElementById(name+"-audio");
+audio.play();
+}
+
+function pauseAudio(name){
+const audio=document.getElementById(name+"-audio");
+audio.pause();
+}
+
+function toggleMute(name){
+const audio=document.getElementById(name+"-audio");
+const button=document.getElementById(name+"-mute-btn");
+
+audio.muted=!audio.muted;
+
+if(audio.muted){
+button.textContent="🔊 UNMUTE";
+}else{
+button.textContent="🔇 MUTE";
+}
 }
 
 function seekAudio(e,name){
-const audio=document.getElementById(name+"-audio")
-const rect=e.currentTarget.getBoundingClientRect()
-const percent=(e.clientX-rect.left)/rect.width
-audio.currentTime=percent*audio.duration
+const audio=document.getElementById(name+"-audio");
+const rect=e.currentTarget.getBoundingClientRect();
+const percent=(e.clientX-rect.left)/rect.width;
+audio.currentTime=percent*audio.duration;
+}
+
+function setVolume(name,val){
+document.getElementById(name+"-audio").volume=val;
 }
 
 ["theme","part1","part2"].forEach(id=>{
-const audio=document.getElementById(id+"-audio")
+const audio=document.getElementById(id+"-audio");
 
 audio.addEventListener("loadedmetadata",()=>{
-document.getElementById(id+"-duration").textContent=formatTime(audio.duration)
-})
+document.getElementById(id+"-duration").textContent=formatTime(audio.duration);
+});
 
 audio.addEventListener("timeupdate",()=>{
-const p=(audio.currentTime/audio.duration)*100
-document.getElementById(id+"-progress").style.width=p+"%"
-document.getElementById(id+"-current").textContent=formatTime(audio.currentTime)
-})
-})
+const p=(audio.currentTime/audio.duration)*100;
+document.getElementById(id+"-progress").style.width=p+"%";
+document.getElementById(id+"-current").textContent=formatTime(audio.currentTime);
+});
+
+audio.addEventListener("ended",()=>{
+const button=document.getElementById(id+"-mute-btn");
+button.textContent="🔇 MUTE";
+audio.muted=false;
+});
+});
 
 </script>
 
