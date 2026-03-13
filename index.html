@@ -7,23 +7,64 @@
 <title>Alien Weed Cult</title>
 
 <style>
+
 body{
 background:black;
 color:#39ff14;
 font-family:'Share Tech Mono', monospace;
-text-align:center;
-max-width:900px;
+max-width:1200px;
 margin:auto;
 padding:20px;
+text-shadow:0 0 4px #39ff14;
+}
+
+h1{
+text-align:center;
+font-size:42px;
+letter-spacing:3px;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+margin-bottom:25px;
+font-size:14px;
+}
+
+.audio-wrap{
+width:100%;
+margin-bottom:40px;
+}
+
+.player{
+width:100%;
+margin-bottom:25px;
+}
+
+audio{
+width:100%;
+height:54px;
+}
+
+.divider{
+text-align:center;
+margin:20px 0;
+font-size:18px;
 }
 
 #text{
 white-space:pre-wrap;
 text-align:left;
+border:2px solid #39ff14;
+padding:20px;
+background:rgba(0,20,0,0.35);
+box-shadow:0 0 12px rgba(57,255,20,0.25);
 }
 
-a{
-color:#39ff14;
+.label{
+text-align:center;
+font-size:13px;
+margin-bottom:6px;
 }
 
 </style>
@@ -33,19 +74,48 @@ color:#39ff14;
 <body>
 
 <h1>THE ALIEN WEED CULT</h1>
+<div class="subtitle">TRANSMISSION PORTAL // ACCESS THE DOCTRINE</div>
+
+<div class="audio-wrap">
+
+<div class="player">
+<div class="label">☽ CULT THEME ☾</div>
+<audio controls>
+<source src="./cult_theme.mp3" type="audio/mpeg">
+</audio>
+</div>
+
+<div class="player">
+<div class="label">☽ DOCTRINE NARRATION ☾</div>
+<audio controls preload="metadata">
+<source src="./alienweedcult_tts.mp3" type="audio/mpeg">
+</audio>
+</div>
+
+</div>
+
+<div class="divider">☽ TRANSMISSION TEXTS ☾</div>
 
 <div id="text">Loading transmissions...</div>
 
-<br><br>
-
-<a href="alienweedcult.pdf">DOWNLOAD THE FULL PDF</a>
-
 <script>
-fetch("doctrine.txt")
-.then(response => response.text())
+
+fetch("./doctrine.txt")
+.then(response => {
+if (!response.ok){
+throw new Error("Could not load doctrine.txt");
+}
+return response.text();
+})
 .then(data => {
 document.getElementById("text").textContent = data;
+})
+.catch(error => {
+document.getElementById("text").textContent =
+"Failed to load transmissions.";
+console.error(error);
 });
+
 </script>
 
 </body>
