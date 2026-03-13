@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
 <title>Alien Weed Cult</title>
 
 <style>
@@ -16,6 +14,58 @@ max-width:1200px;
 margin:auto;
 padding:20px;
 text-shadow:0 0 4px #39ff14;
+overflow-x:hidden;
+}
+
+/* CRT scanlines */
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:repeating-linear-gradient(
+0deg,
+rgba(0,255,0,0.03),
+rgba(0,255,0,0.03) 1px,
+transparent 1px,
+transparent 3px
+);
+pointer-events:none;
+z-index:1000;
+}
+
+/* Boot screen */
+
+#boot{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+color:#39ff14;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-size:22px;
+z-index:2000;
+white-space:pre-line;
+}
+
+#site{
+display:none;
+}
+
+.sigil{
+text-align:center;
+font-size:28px;
+margin-top:10px;
+margin-bottom:10px;
+letter-spacing:6px;
 }
 
 h1{
@@ -27,8 +77,15 @@ margin-bottom:10px;
 
 .subtitle{
 text-align:center;
-margin-bottom:25px;
+margin-bottom:12px;
 font-size:14px;
+}
+
+.counter{
+text-align:center;
+margin-bottom:25px;
+font-size:13px;
+opacity:0.9;
 }
 
 .audio-wrap{
@@ -59,6 +116,7 @@ border:2px solid #39ff14;
 padding:20px;
 background:rgba(0,20,0,0.35);
 box-shadow:0 0 12px rgba(57,255,20,0.25);
+position:relative;
 }
 
 .label{
@@ -67,13 +125,30 @@ font-size:13px;
 margin-bottom:6px;
 }
 
-/* ORACLE */
+/* blinking cursor */
+
+.cursor{
+display:inline-block;
+width:10px;
+height:20px;
+background:#39ff14;
+margin-top:10px;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0;}
+100%{opacity:1;}
+}
+
+/* ORACLE (same position as before) */
 
 .oracle{
 position:fixed;
-right:-90px;
-bottom:20px;
-height:70vh;
+right:-40px;
+bottom:0;
+height:57vh;
 z-index:999;
 pointer-events:none;
 animation:floatOracle 14s ease-in-out infinite;
@@ -82,18 +157,28 @@ filter:drop-shadow(0 0 20px purple);
 
 @keyframes floatOracle{
 0% { transform: translateY(0px); }
-50% { transform: translateY(-30px); }
+50% { transform: translateY(-25px); }
 100% { transform: translateY(0px); }
 }
 
 </style>
-
 </head>
 
 <body>
 
+<div id="boot">
+CONNECTING TO ALIEN NETWORK...
+DECRYPTING TRANSMISSION...
+ACCESS GRANTED
+</div>
+
+<div id="site">
+
+<div class="sigil">☽ ✶ ☾</div>
+
 <h1>THE ALIEN WEED CULT</h1>
 <div class="subtitle">TRANSMISSION PORTAL // ACCESS THE DOCTRINE</div>
+<div class="counter">VISITORS: 000421</div>
 
 <div class="audio-wrap">
 
@@ -123,10 +208,22 @@ filter:drop-shadow(0 0 20px purple);
 <div class="divider">☽ TRANSMISSION TEXTS ☾</div>
 
 <div id="text">Loading transmissions...</div>
+<div class="cursor"></div>
 
 <img src="./oracle.png" class="oracle">
 
+</div>
+
 <script>
+
+/* Faster boot */
+
+setTimeout(() => {
+document.getElementById("boot").style.display = "none";
+document.getElementById("site").style.display = "block";
+}, 800);
+
+/* Load doctrine */
 
 fetch("./doctrine.txt")
 .then(response => {
@@ -139,8 +236,7 @@ return response.text();
 document.getElementById("text").textContent = data;
 })
 .catch(error => {
-document.getElementById("text").textContent =
-"Failed to load transmissions.";
+document.getElementById("text").textContent = "Failed to load transmissions.";
 console.error(error);
 });
 
