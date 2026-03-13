@@ -118,7 +118,7 @@ text-shadow:
 .player-title{
 font-size:14px;
 letter-spacing:2px;
-margin-bottom:1px;
+margin-bottom:2px;
 text-shadow:0 0 4px #39ff14;
 }
 
@@ -127,7 +127,7 @@ text-shadow:0 0 4px #39ff14;
 .cult-player{
 background:rgba(0,20,0,0.35);
 border:1px solid #39ff14;
-padding:4px;
+padding:3px;
 box-shadow:0 0 6px rgba(57,255,20,0.2);
 margin-bottom:2px;
 }
@@ -137,17 +137,17 @@ margin-bottom:2px;
 .button-row{
 display:flex;
 gap:6px;
-margin-bottom:2px;
+margin-bottom:8px;
 }
 
 .cult-button{
 background:black;
 color:#39ff14;
 border:1px solid #39ff14;
-padding:8px 14px;
+padding:8px 16px;
 font-family:'Share Tech Mono', monospace;
 cursor:pointer;
-font-size:16px;
+font-size:18px;
 text-shadow:0 0 4px #39ff14;
 }
 
@@ -160,11 +160,11 @@ color:black;
 
 .progress-container{
 width:100%;
-height:8px;
+height:6px;
 background:rgba(0,0,0,0.8);
 cursor:pointer;
 overflow:hidden;
-margin-top:1px;
+margin-top:4px;
 }
 
 .progress-bar{
@@ -177,23 +177,9 @@ box-shadow:0 0 10px #39ff14;
 /* time */
 
 .time-display{
-margin-top:1px;
+margin-top:2px;
 text-align:right;
 font-size:11px;
-}
-
-/* volume */
-
-.volume-control{
-margin-top:1px;
-display:flex;
-align-items:center;
-gap:6px;
-font-size:11px;
-}
-
-.volume-slider{
-width:110px;
 }
 
 /* doctrine */
@@ -252,14 +238,22 @@ ACCESS GRANTED
 TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 </div>
 
+<!-- CULT THEME -->
+
 <div class="cult-player">
 
 <div class="player-title">CULT THEME</div>
 
 <div class="button-row">
-<button class="cult-button" onclick="playAudio('theme')">▶</button>
-<button class="cult-button" onclick="pauseAudio('theme')">⏸</button>
-<button class="cult-button" id="theme-mute-btn" onclick="toggleMute('theme')">🔇</button>
+
+<button class="cult-button" id="theme-play" onclick="togglePlay('theme')">
+▶
+</button>
+
+<button class="cult-button" onclick="toggleMute('theme')">
+🔇
+</button>
+
 </div>
 
 <div class="progress-container" onclick="seekAudio(event,'theme')">
@@ -271,26 +265,28 @@ TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 <span id="theme-duration">0:00</span>
 </div>
 
-<div class="volume-control">
-Vol
-<input class="volume-slider" type="range" min="0" max="1" step="0.01" value="1"
-oninput="setVolume('theme',this.value)">
-</div>
-
 <audio id="theme-audio">
 <source src="cult_theme.mp3">
 </audio>
 
 </div>
 
+<!-- DOCTRINE PART 1 -->
+
 <div class="cult-player">
 
 <div class="player-title">DOCTRINE PART 1</div>
 
 <div class="button-row">
-<button class="cult-button" onclick="playAudio('part1')">▶</button>
-<button class="cult-button" onclick="pauseAudio('part1')">⏸</button>
-<button class="cult-button" id="part1-mute-btn" onclick="toggleMute('part1')">🔇</button>
+
+<button class="cult-button" id="part1-play" onclick="togglePlay('part1')">
+▶
+</button>
+
+<button class="cult-button" onclick="toggleMute('part1')">
+🔇
+</button>
+
 </div>
 
 <div class="progress-container" onclick="seekAudio(event,'part1')">
@@ -302,26 +298,28 @@ oninput="setVolume('theme',this.value)">
 <span id="part1-duration">0:00</span>
 </div>
 
-<div class="volume-control">
-Vol
-<input class="volume-slider" type="range" min="0" max="1" step="0.01" value="1"
-oninput="setVolume('part1',this.value)">
-</div>
-
 <audio id="part1-audio">
 <source src="alienweedcult_part1.mp3">
 </audio>
 
 </div>
 
+<!-- DOCTRINE PART 2 -->
+
 <div class="cult-player">
 
 <div class="player-title">DOCTRINE PART 2</div>
 
 <div class="button-row">
-<button class="cult-button" onclick="playAudio('part2')">▶</button>
-<button class="cult-button" onclick="pauseAudio('part2')">⏸</button>
-<button class="cult-button" id="part2-mute-btn" onclick="toggleMute('part2')">🔇</button>
+
+<button class="cult-button" id="part2-play" onclick="togglePlay('part2')">
+▶
+</button>
+
+<button class="cult-button" onclick="toggleMute('part2')">
+🔇
+</button>
+
 </div>
 
 <div class="progress-container" onclick="seekAudio(event,'part2')">
@@ -331,12 +329,6 @@ oninput="setVolume('part1',this.value)">
 <div class="time-display">
 <span id="part2-current">0:00</span> /
 <span id="part2-duration">0:00</span>
-</div>
-
-<div class="volume-control">
-Vol
-<input class="volume-slider" type="range" min="0" max="1" step="0.01" value="1"
-oninput="setVolume('part2',this.value)">
 </div>
 
 <audio id="part2-audio">
@@ -372,19 +364,24 @@ const sec=Math.floor(s%60).toString().padStart(2,"0");
 return m+":"+sec;
 }
 
-function playAudio(name){
-document.getElementById(name+"-audio").play();
+function togglePlay(name){
+
+const audio=document.getElementById(name+"-audio");
+const button=document.getElementById(name+"-play");
+
+if(audio.paused){
+audio.play();
+button.textContent="⏸";
+}else{
+audio.pause();
+button.textContent="▶";
 }
 
-function pauseAudio(name){
-document.getElementById(name+"-audio").pause();
 }
 
 function toggleMute(name){
 const audio=document.getElementById(name+"-audio");
-const btn=document.getElementById(name+"-mute-btn");
 audio.muted=!audio.muted;
-btn.textContent = audio.muted ? "🔊" : "🔇";
 }
 
 function seekAudio(e,name){
@@ -392,10 +389,6 @@ const audio=document.getElementById(name+"-audio");
 const rect=e.currentTarget.getBoundingClientRect();
 const percent=(e.clientX-rect.left)/rect.width;
 audio.currentTime=percent*audio.duration;
-}
-
-function setVolume(name,val){
-document.getElementById(name+"-audio").volume=val;
 }
 
 ["theme","part1","part2"].forEach(id=>{
