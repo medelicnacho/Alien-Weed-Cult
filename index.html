@@ -39,7 +39,7 @@ pointer-events:none;
 z-index:1000;
 }
 
-/* boot screen */
+/* boot */
 
 #boot{
 position:fixed;
@@ -58,43 +58,104 @@ z-index:2000;
 white-space:pre-line;
 }
 
+/* sigil */
+
 .sigil{
 text-align:center;
-font-size:28px;
-letter-spacing:6px;
+font-size:42px;
+letter-spacing:12px;
 margin-bottom:10px;
+text-shadow:0 0 20px #39ff14;
 }
+
+/* main title */
 
 h1{
 text-align:center;
-font-size:42px;
-letter-spacing:3px;
+font-size:70px;
+letter-spacing:8px;
 margin-bottom:10px;
+text-shadow:
+0 0 10px #39ff14,
+0 0 30px #39ff14,
+0 0 60px #39ff14;
 }
+
+/* subtitle */
 
 .subtitle{
 text-align:center;
+font-size:22px;
+letter-spacing:3px;
 margin-bottom:25px;
-font-size:14px;
 }
 
-.audio-wrap{
-margin-bottom:30px;
-}
+/* BIG transmission title */
 
-.player{
-margin-bottom:20px;
-}
-
-audio{
-width:100%;
-height:54px;
-}
-
-.divider{
+.section-title{
 text-align:center;
-margin:20px 0;
-font-size:18px;
+font-size:48px;
+letter-spacing:6px;
+margin-top:50px;
+margin-bottom:25px;
+text-shadow:
+0 0 10px #39ff14,
+0 0 25px #39ff14;
+}
+
+/* player */
+
+.cult-player{
+background:rgba(0,20,0,0.45);
+border:2px solid #39ff14;
+padding:16px;
+box-shadow:0 0 12px rgba(57,255,20,0.3);
+margin-bottom:25px;
+}
+
+.cult-top{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:14px;
+}
+
+.cult-button{
+background:black;
+color:#39ff14;
+border:1px solid #39ff14;
+padding:8px 14px;
+font-family:'Share Tech Mono', monospace;
+cursor:pointer;
+text-shadow:0 0 4px #39ff14;
+}
+
+.cult-button:hover{
+background:#39ff14;
+color:black;
+}
+
+.progress-container{
+width:100%;
+height:20px;
+border:1px solid #39ff14;
+background:rgba(0,0,0,0.8);
+cursor:pointer;
+box-shadow:inset 0 0 6px rgba(57,255,20,0.25);
+overflow:hidden;
+}
+
+.progress-bar{
+height:100%;
+width:0%;
+background:linear-gradient(to right,#39ff14,#7dff5a);
+box-shadow:0 0 10px #39ff14;
+}
+
+.time-display{
+margin-top:10px;
+text-align:right;
+font-size:14px;
 }
 
 /* doctrine box */
@@ -106,23 +167,6 @@ border:2px solid #39ff14;
 padding:20px;
 background:rgba(0,20,0,0.35);
 box-shadow:0 0 12px rgba(57,255,20,0.25);
-}
-
-/* blinking cursor */
-
-.cursor{
-display:inline-block;
-width:10px;
-height:20px;
-background:#39ff14;
-animation:blink 1s infinite;
-margin-top:10px;
-}
-
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0;}
-100%{opacity:1;}
 }
 
 /* oracle */
@@ -139,9 +183,9 @@ filter:drop-shadow(0 0 20px purple);
 }
 
 @keyframes floatOracle{
-0%{transform:translateY(0);}
-50%{transform:translateY(-25px);}
-100%{transform:translateY(0);}
+0%{transform:translateY(0)}
+50%{transform:translateY(-25px)}
+100%{transform:translateY(0)}
 }
 
 </style>
@@ -165,36 +209,66 @@ ACCESS GRANTED
 TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 </div>
 
-<div class="audio-wrap">
+<!-- PLAYERS -->
 
-<div class="player">
-<div style="text-align:center;margin-bottom:6px;">☽ CULT THEME ☾</div>
-<audio controls>
-<source src="cult_theme.mp3" type="audio/mpeg">
+<div class="cult-player">
+<button class="cult-button" onclick="toggleAudio('theme')">▶ PLAY CULT THEME</button>
+
+<div class="progress-container" onclick="seekAudio(event,'theme')">
+<div class="progress-bar" id="theme-progress"></div>
+</div>
+
+<div class="time-display">
+<span id="theme-current">0:00</span> /
+<span id="theme-duration">0:00</span>
+</div>
+
+<audio id="theme-audio">
+<source src="cult_theme.mp3">
 </audio>
 </div>
 
-<div class="player">
-<div style="text-align:center;margin-bottom:6px;">☽ DOCTRINE NARRATION PART 1 ☾</div>
-<audio controls preload="metadata">
-<source src="alienweedcult_part1.mp3" type="audio/mpeg">
+
+<div class="cult-player">
+<button class="cult-button" onclick="toggleAudio('part1')">▶ PLAY DOCTRINE PART 1</button>
+
+<div class="progress-container" onclick="seekAudio(event,'part1')">
+<div class="progress-bar" id="part1-progress"></div>
+</div>
+
+<div class="time-display">
+<span id="part1-current">0:00</span> /
+<span id="part1-duration">0:00</span>
+</div>
+
+<audio id="part1-audio">
+<source src="alienweedcult_part1.mp3">
 </audio>
 </div>
 
-<div class="player">
-<div style="text-align:center;margin-bottom:6px;">☽ DOCTRINE NARRATION PART 2 ☾</div>
-<audio controls preload="metadata">
-<source src="alienweedcult_part2.mp3" type="audio/mpeg">
+
+<div class="cult-player">
+<button class="cult-button" onclick="toggleAudio('part2')">▶ PLAY DOCTRINE PART 2</button>
+
+<div class="progress-container" onclick="seekAudio(event,'part2')">
+<div class="progress-bar" id="part2-progress"></div>
+</div>
+
+<div class="time-display">
+<span id="part2-current">0:00</span> /
+<span id="part2-duration">0:00</span>
+</div>
+
+<audio id="part2-audio">
+<source src="alienweedcult_part2.mp3">
 </audio>
 </div>
 
+<div class="section-title">
+☽ TRANSMISSION TEXTS ☾
 </div>
-
-<div class="divider">☽ TRANSMISSION TEXTS ☾</div>
 
 <div id="text">Loading transmissions...</div>
-
-<div class="cursor"></div>
 
 <img src="oracle.png" class="oracle">
 
@@ -202,29 +276,46 @@ TRANSMISSION PORTAL // ACCESS THE DOCTRINE
 
 <script>
 
-/* faster boot */
-
 setTimeout(()=>{
-document.getElementById("boot").style.display="none";
-document.getElementById("site").style.display="block";
-},600);
-
-/* load doctrine */
+document.getElementById("boot").style.display="none"
+document.getElementById("site").style.display="block"
+},600)
 
 fetch("doctrine.txt")
-.then(response => {
-if (!response.ok){
-throw new Error("Could not load doctrine.txt");
+.then(r=>r.text())
+.then(t=>document.getElementById("text").textContent=t)
+
+function formatTime(s){
+const m=Math.floor(s/60)
+const sec=Math.floor(s%60).toString().padStart(2,"0")
+return m+":"+sec
 }
-return response.text();
+
+function toggleAudio(name){
+const audio=document.getElementById(name+"-audio")
+if(audio.paused){audio.play()}else{audio.pause()}
+}
+
+function seekAudio(e,name){
+const audio=document.getElementById(name+"-audio")
+const rect=e.currentTarget.getBoundingClientRect()
+const percent=(e.clientX-rect.left)/rect.width
+audio.currentTime=percent*audio.duration
+}
+
+["theme","part1","part2"].forEach(id=>{
+const audio=document.getElementById(id+"-audio")
+
+audio.addEventListener("loadedmetadata",()=>{
+document.getElementById(id+"-duration").textContent=formatTime(audio.duration)
 })
-.then(text => {
-document.getElementById("text").textContent = text;
+
+audio.addEventListener("timeupdate",()=>{
+const p=(audio.currentTime/audio.duration)*100
+document.getElementById(id+"-progress").style.width=p+"%"
+document.getElementById(id+"-current").textContent=formatTime(audio.currentTime)
 })
-.catch(error => {
-document.getElementById("text").textContent = "Failed to load transmissions.";
-console.error(error);
-});
+})
 
 </script>
 
