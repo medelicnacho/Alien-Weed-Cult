@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<title>Alien Weed Cult Texts</title>
+
+<style>
+body{
+background:black;
+color:#39ff14;
+font-family:'Share Tech Mono', monospace;
+text-align:center;
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+#text{
+white-space:pre-wrap;
+text-align:left;
+}
+
+a{
+color:#39ff14;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>THE ALIEN WEED CULT TEXTS</h1>
+
+<div id="text">Loading transmissions...</div>
+
+<br><br>
+
+<a href="site.html">RETURN TO HOME</a>
+
+<script>
+
+fetch("doctrine.txt")
+.then(response => response.text())
+.then(data => {
+document.getElementById("text").textContent = data;
+});
+
+</script>
+
+</body>
+</html>
