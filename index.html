@@ -67,6 +67,25 @@ font-size:13px;
 margin-bottom:6px;
 }
 
+/* ORACLE */
+
+.oracle{
+position:fixed;
+right:-90px;
+bottom:-20px;
+height:95vh;
+z-index:999;
+pointer-events:none;
+animation:floatOracle 14s ease-in-out infinite;
+filter:drop-shadow(0 0 20px purple);
+}
+
+@keyframes floatOracle{
+0% { transform: translateY(0px); }
+50% { transform: translateY(-30px); }
+100% { transform: translateY(0px); }
+}
+
 </style>
 
 </head>
@@ -104,6 +123,8 @@ margin-bottom:6px;
 <div class="divider">☽ TRANSMISSION TEXTS ☾</div>
 
 <div id="text">Loading transmissions...</div>
+
+<img src="./oracle.png" class="oracle">
 
 <script>
 
